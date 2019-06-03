@@ -6,18 +6,18 @@ $(document).ready(function() {
 
     // add button to source code chunks
     if ( $(this).hasClass('s') ) {
-      $('pre.r', this).prepend("<div class=\"showopt\">Show Source</div><br style=\"line-height:22px;\"/>");
+      $('pre.r', this).prepend("<div class=\"showopt\">顯示源始碼</div><br style=\"line-height:22px;\"/>");
       $('pre.r', this).children('code').attr('class', 'folded');
     }
 
     // add button to output chunks
     if ( $(this).hasClass('o') ) {
-      $('pre:not(.r)', this).has('code').prepend("<div class=\"showopt\">Show R output</div><br style=\"line-height:22px;\"/>");
+      $('pre:not(.r)', this).has('code').prepend("<div class=\"showopt\">顯示R輸出</div><br style=\"line-height:22px;\"/>");
       $('pre:not(.r)', this).children('code:not(r)').addClass('folded');
 
       // add button to plots
       $(this).find('img').wrap('<pre class=\"plot\"></pre>');
-      $('pre.plot', this).prepend("<div class=\"showopt\">Show Plot</div><br style=\"line-height:22px;\"/>");
+      $('pre.plot', this).prepend("<div class=\"showopt\">顯示圖例</div><br style=\"line-height:22px;\"/>");
       $('pre.plot', this).children('img').addClass('folded');
 
     }
@@ -29,10 +29,10 @@ $(document).ready(function() {
   // function to toggle the visibility
   $('.showopt').click(function() {
     var label = $(this).html();
-    if (label.indexOf("Show") >= 0) {
-      $(this).html(label.replace("Show", "Hide"));
+    if (label.indexOf("顯示") >= 0) {
+      $(this).html(label.replace("顯示", "隱藏"));
     } else {
-      $(this).html(label.replace("Hide", "Show"));
+      $(this).html(label.replace("隱藏", "顯示"));
     }
     $(this).siblings('code, img').slideToggle('fast', 'swing');
   });

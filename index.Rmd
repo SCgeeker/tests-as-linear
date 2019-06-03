@@ -1,6 +1,6 @@
 ---
-title: "Common statistical tests are linear models (or: how to teach stats)"
-author: "Jonas Kristoffer Lindeløv"
+title: "基礎統計分析皆是線性模型(又名：丹麥式基礎統計教學)"
+author: "原作者：Jonas Kristoffer Lindeløv"
 
 output: 
   html_document:
@@ -61,9 +61,9 @@ output:
 <link rel="stylesheet" type="text/css" href="hideOutput.css">
 <script src="hideOutput.js"></script>
 
-<!-- Twitter share button -->
+<!-- Twitter share button
 <a href="https://twitter.com/intent/tweet?text=Common%20statistical%20tests%20are%20linear%20models%20(or:%20how%20to%20teach%20stats)%20https%3A%2F%2Flindeloev.github.io%2Ftests-as-linear%20via%20%40jonaslindeloev" class="twitter-hashtag-button" data-size="large" data-related="jonaslindeloev" data-show-count="false">Share on Twitter</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
+ -->
 <p></p>
 
 ```{r echo=FALSE}
@@ -112,7 +112,7 @@ theme_icon = function(P, jitter=FALSE, xlim=c(-0.5, 2), ylim=c(-0.5, 2)) {
 ```
 
 
-This document is summarised in the table below. It shows the linear models underlying common parametric and non-parametric tests. Formulating all the tests in the same language highlights the many similarities between them. Get it [as an image](linear_tests_cheat_sheet.png) or [as a PDF](linear_tests_cheat_sheet.pdf).
+This document is summarised in the table below. It shows the linear models underlying common parametric and non-parametric tests. Formulating all the tests in the same language highlights the many similarities between them. 你可以直接下載 [PNG圖檔](linear_tests_cheat_sheet.png)或 [PDF檔案](linear_tests_cheat_sheet.pdf).
 
 ***
 
@@ -121,7 +121,7 @@ This document is summarised in the table below. It shows the linear models under
 ***
 
 
-# The simplicity underlying common tests
+# 基礎統計方法的共同形式
 Most of the common statistical models (t-test, correlation, ANOVA; chi-square, etc.) are special cases of linear models or a very close approximation. This beautiful simplicity means that there is less to learn. In particular, it all comes down to $y = a \cdot x + b$ which most students know from highschool. Unfortunately, stats intro courses are usually taught as if each test is an independent tool, needlessly making life more complicated for students and teachers alike. 
 
 This needless complexity multiplies when students try to rote learn the parametric assumptions underlying each test separately rather than deducing them from the linear model.
@@ -133,7 +133,7 @@ Concerning the teaching of *non-parametric* tests in intro-courses, I think that
 Use the menu to jump to your favourite section. There are links to lots of similar (though more scattered) stuff under [sources](#links) and [teaching materials](#course). I hope that you will join in suggesting improvements or submitting improvements yourself in [the Github repo to this page](https://github.com/lindeloev/tests-as-linear). Let's make it awesome!
 
 
-# Settings and toy data
+# 網頁設定與示範資料
 Unfold this if you want to see functions and other settings for this notebook:
 <div class='fold s'>
 ```{r, message=FALSE, warning=FALSE, results='hide'}
@@ -204,8 +204,8 @@ signed_rank = function(x) sign(x) * rank(abs(x))
 ```
 
 
-# Pearson and Spearman correlation {#correlation}
-### Theory: As linear models
+# 皮爾森與斯皮爾曼相關 {#correlation}
+### 線性模型解說
 Model: the recipe for $y$ is a slope ($\beta_1$) times $x$ plus an intercept ($\beta_0$, aka a straight line).
 
 $y = \beta_0 + \beta_1 x \qquad \mathcal{H}_0: \beta_1 = 0$
@@ -269,7 +269,7 @@ P_spearman = ggplot(D_correlation, aes(x=rank(X1), y=rank(X2))) +
 </div>
 
 
-### R code: Pearson correlation
+### R程式碼： 皮爾森相關
 It couldn't be much simpler to run these models in R. They yield identical `p` and `t`, but there's a catch: `lm` gives you the *slope* and even though that is usually much more interpretable and informative than the *correlation coefficient* *r*, you may still want *r*. Luckily, the slope becomes `r` if `x` and `y` have a standard deviation of exactly 1. You can do this using `scale(x)` or `I(x/sd(x))`:
 
 
@@ -310,7 +310,7 @@ summary(c)
 The CIs are not exactly identical, but very close.
 
 
-### R code: Spearman correlation
+### R程式碼： 斯皮爾曼相關
 Note that we can interpret the slope which is the number of ranks $y$ change for each rank on $x$. I think that this is a pretty interesting number. However, the intercept is less interpretable since it lies at $rank(x) = 0$ which is impossible since x starts at 1.
 
 See the identical `r` (now "rho") and `p`:
@@ -338,9 +338,9 @@ summary(b)
 </div>
 
 
-# One mean
-## One sample t-test and Wilcoxon signed-rank {#t1}
-### Theory: As linear models
+# 單一平均數
+## 單一樣本平均數t檢定與Wilcoxon氏符號檢定 {#t1}
+### 線性模型解說
 **t-test** model: A single number predicts $y$.
 
 $y = \beta_0 \qquad \mathcal{H}_0: \beta_0 = 0$
@@ -385,7 +385,7 @@ theme_axis(P_t1, ylim=c(-1, 2), legend.position=c(0.6, 0.1)) +
 
 One interesting implication is that *many "non-parametric tests" are precisely as parametric as their parametric counterparts with means, standard deviations, homogeneity of variance, etc. - just on transformed data*.
 
-### R code: One-sample t-test
+### R程式碼： 單一樣本平均數t檢定
 Try running the R code below and see that the linear model (`lm`) produces the same $t$, $p$, and $r$ as the built-in `t.test`. The confidence interval is not presented in the output of `lm` but is also identical if you use `confint(lm(...))`:
 
 ```{r}
@@ -423,7 +423,7 @@ summary(b)
 
 
 
-### R code: Wilcoxon signed-rank test
+### R程式碼： Wilcoxon氏符號檢定
 In addition to matching `p`-values, `lm` also gives us the mean signed rank, which I find to be an informative number.
 
 ```{r, results='hold'}
@@ -457,8 +457,8 @@ c
 
 
 
-## Paired samples t-test and Wilcoxon matched pairs {#tpair}
-### Theory: As linear models
+## 相依樣本t檢定與Wilcoxon氏配對檢定 {#tpair}
+### 線性模型解說
 **t-test** model: a single number (intercept) predicts the pairwise differences.
 
 $y_2-y_1 = \beta_0 \qquad \mathcal{H}_0: \beta_0 = 0$
@@ -488,7 +488,7 @@ Similarly, the **Wilcoxon matched pairs** only differ from **Wilcoxon signed-ran
 $signed\_rank(y_2-y_1) = \beta_0 \qquad \mathcal{H}_0: \beta_0 = 0$
 
 
-### R code: Paired sample t-test
+### R程式碼： 相依樣本t檢定
 ```{r, results='hold'}
 a = t.test(y, y2, paired = TRUE) # Built-in paired t-test
 b = lm(y - y2 ~ 1) # Equivalent linear model
@@ -522,7 +522,7 @@ summary(b)
 </div>
 
 
-### R code: Wilcoxon matched pairs
+### R程式碼： Wilcoxon氏配對檢定
 Again, we do the signed-ranks trick. This is still an approximation, but a close one:
 
 ```{r, results='hold'}
@@ -564,10 +564,10 @@ c
 For large sample sizes (N >> 100), this approaches the **sign test** to a reasonable degree, but this approximation is too inaccurate to flesh out here.
 
 
-# Two means
+# 兩組平均數
 
-## Independent t-test and Mann-Whitney U {#t2}
-### Theory: As linear models
+## 獨立樣本t檢定與Mann-Whitney氏U檢定 {#t2}
+### 線性模型解說
 Independent t-test model: two means predict $y$.
 
 $y_i = \beta_0 + \beta_1 x_i \qquad \mathcal{H}_0: \beta_1 = 0$
@@ -580,7 +580,7 @@ $rank(y_i) = \beta_0 + \beta_1 x_i \qquad \mathcal{H}_0: \beta_1 = 0$
 
 To me, equivalences like this make "non-parametric" statistics much easier to understand. The approximation is appropriate [when the sample size is larger than 11 in each group and virtually perfect when N > 30 in each group](simulate_mannwhitney.html).
 
-### Theory: Dummy coding {#dummy}
+### 圖解虛擬變項編碼 {#dummy}
 Dummy coding can be understood visually. The indicator is on the x-axis so data points from the first group are located at $x = 0$ and data points from the second group is located at $x = 1$. Then $\beta_0$ is the intercept (blue line) and $\beta_1$ is the slope between the two means (red line). Why? Because when $\Delta x = 1$ the slope equals the difference because:
 
 $slope = \Delta y / \Delta x = \Delta y / 1 = \Delta y = difference$
@@ -610,7 +610,7 @@ theme_axis(P_t2, jitter=TRUE, xlim=c(-0.3, 2), legend.position=c(0.53, 0.08))
 </div>
 
 
-### Theory: Dummy coding (continued) {#dummy2}
+### 更多有關虛擬變項編碼 (continued) {#dummy2}
 If you feel like you get dummy coding now, just skip ahead to the next section. Here is a more elaborate explanation of dummy coding:
 
 If a data point was sampled from the first group, i.e., when $x_i = 0$, the model simply becomes $y = \beta_0 + \beta_1 \cdot 0 = \beta_0$. In other words, the model predicts that that data point is $beta_0$. It turns out that the $\beta$ which best predicts a set of data points is the *mean* of those data points, so $\beta_0$ is the mean of group 1.
@@ -622,7 +622,7 @@ As an example, say group 1 is 25 years old ($\beta_0 = 25$) and group 2 is 28 ye
 Hooray, it works! For first-timers it takes a few moments to understand dummy coding, but you only need to know addition and multiplication to get there!
 
 
-### R code: independent t-test
+### R程式碼： 獨立樣本t檢定
 As a reminder, when we write `y ~ 1 + x` in R, it is shorthand for $y = \beta_0 \cdot 1 + \beta_1 \cdot x$ and R goes on computing the $\beta$s for you. Thus `y ~ 1 + x` is the R-way of writing $y = a \cdot x + b$.
 
 Notice the identical `t`, `df`, `p`, and estimates. We can get the confidence interval by running `confint(lm(...))`.
@@ -678,7 +678,7 @@ summary(c)
 
 
 
-### R code: Mann-Whitney U
+### R程式碼： Mann-Whitney氏U檢定
 ```{r, results='hold'}
 # Wilcoxon / Mann-Whitney U
 a = wilcox.test(y, y2)
@@ -709,7 +709,7 @@ summary(b)
 
 
 
-## Welch's t-test {#welch}
+## Welch氏t檢定 {#welch}
 This is identical to the (Student's) [independent t-test](#t2) above except that Student's assumes identical variances and **Welch's t-test** does not. So the linear model is the same and the trick is in the variances, which I won't go further into here.
 
 ```{r, results='hold'}
@@ -745,11 +745,11 @@ summary(b)
 </div>
 
 
-# Three or more means
+# 三組以上平均數
 ANOVAs are linear models with (only) categorical predictors so they simply extend everything we did above, relying heavily on dummy coding. Do make sure to read [the section on dummy coding](#dummy) if you haven't already.
 
-## One-way ANOVA and Kruskal-Wallis {#anova1}
-### Theory: As linear models
+## 單因子變異數分析與Kruskal-Wallis氏無母數檢定 {#anova1}
+### 線性模型解說
 Model: One mean for each group predicts $y$.
 
 $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 +... \qquad \mathcal{H}_0: y = \beta_0$
@@ -800,7 +800,7 @@ $rank(y) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 +...$
 This approximation is [good enough for 12 or more data points](simulate_kruskall.html). Again, if you do this for just one or two groups, we're already acquainted with those equations, i.e. the [Wilcoxon signed-rank test](#t1) or the [Mann-Whitney U test](#t2) respectively. 
 
 
-### Example data
+### 示範資料
 We make a three-level factor with the levels `a`, `b`, and `c` so that the **one-way ANOVA** basically becomes a "three-sample t-test". Then we manually do the [dummy coding](#dummy) of the groups.
 
 ```{r}
@@ -823,7 +823,7 @@ print_df(D, navigate=TRUE)
 See? Exactly one parameter predicts a `value` in a given row while the others are not included in the modeling of that `value`. 
 
 
-### R code: one-way ANOVA
+### R程式碼： 單因子變異數分析
 OK, let's see the identity between the built-in **ANOVA** (`car::Anova`) and the dummy-coded in-your-face linear model in `lm`. Actually, `car::Anova` and `aov` are just wrappers around `lm` so the identity comes as no surprise. The latter returns parameter estimates as well (bonus!), but we'll just look at the overall model statistics for now. Note that I do not use the `aov` function because it computes type-I sum of squares. There is a BIG polarized debate about whether to use type-II (as `car::Anova` does by default) or type-III sum of squares, but let's skip that for now.
 
 
@@ -855,7 +855,7 @@ summary(b)
 </div>
 
 
-### R code: Kruskal-Wallis
+### R程式碼： Kruskal-Wallis氏無母數檢定
 ```{r, results='hold'}
 a = kruskal.test(value ~ group, D)  # Built-in
 b = lm(rank(value) ~ 1 + group_a + group_b + group_c, D)  # As linear model
@@ -882,8 +882,8 @@ c
 
 
 
-## Two-way ANOVA (plot in progress!) {#anova2}
-### Theory: As linear models
+## 二因子變異數分析(圖例製作中！) {#anova2}
+### 線性模型解說
 Model: one mean per group (main effects) plus these means multiplied across factors (interaction effects). The main effects are the [one-way ANOVA](#anova1)s above, though in the context of a larger model. The interaction effect is harder to explain in the abstract even though it's just a few numbers multiplied with each other. I will leave that to the teachers to keep focus on equivalences here :-)
 
 Switching to matrix notation:
@@ -925,7 +925,7 @@ theme_axis(P_anova2, xlim=c(-0.5, 3.5)) + theme(axis.text.x = element_text())
 </div>
 
 
-### R code: Two-way ANOVA
+### R程式碼： 二因子變異數分析
 Now let's turn to the actual modeling in R. We compare the built-in ANOVA function to the linear model using `lm`. Notice that in ANOVA, we are testing a full factor interaction all at once which involves many parameters (two in this case), so we can't look at the overall model fit nor any particular parameter for the result. Therefore, I use a likelihood-ratio test to compare a full two-way ANOVA model ("saturated") to one without the interaction effect(s). We do so using the `anova` function. Even though that looks like cheating, it's just computing likelihoods, p-values, etc. on the models that were already fitted, so it's legit!
 
 ```{r, results='hold'}
@@ -1000,7 +1000,7 @@ summary(f)
 </div>
 
 
-## ANCOVA {#ancova}
+## 共變數分析 {#ancova}
 This is simply ANOVA with a continuous regressor added so that it now contains continuous and (dummy-coded) categorical predictors. For example, if we continue with the [one-way ANOVA](#anova1) example, we can add `age` and it is now called a **one-way ANCOVA**:
 
 $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_3 age$
@@ -1099,12 +1099,12 @@ sm::sm.ancova(x=D$age, y=D$value, group=D$group, display='none', model='equal')
 -->
 
 
-# Proportions: Chi-square is a log-linear model
+# 比例：卡方分佈是對數線性函數
 Recall that when you take the logarithm, you can easily make statements about *proportions*, i.e., that for every increase in $x$, $y$ increases a certain percentage. This turns out to be one of the simplest (and therefore best!) ways to make count data and contingency tables intelligible. See [this nice introduction](https://www.uni-tuebingen.de/fileadmin/Uni_Tuebingen/SFB/SFB_833/A_Bereich/A1/Christoph_Scheepers_-_Statistikworkshop.pdf) to Chi-Square tests as linear models.
 
 
-## Goodness of fit {#goodness}
-### Theory: As log-linear model
+## 適合度檢定 {#goodness}
+### 線性模型解說
 Model: a single intercept predicts $log(y)$.
 
 I'll refer you to take a look at [the section on contingency tables](#contingency) which is basically a "two-way goodness of fit".
@@ -1125,7 +1125,7 @@ $log(y) = log(\beta_1*x_1 + \beta_2*x_2 + \beta_3*x_3 +...) \qquad \mathcal{H}_0
 $log(y) = log(N\beta_1*x_1/N + N)$
 -->
 
-### Example data
+### 示範資料
 For this, we need some wide count data:
 ```{r}
 # Data in long format
@@ -1142,7 +1142,7 @@ print_df(D)
 ```
 
 
-### R code: Goodness of fit
+### R程式碼： 適合度檢定
 Now let's see that the Goodness of fit is just a log-linear equivalent to a one-way ANOVA. We set `family = poisson()` which defaults to setting a logarithmic [link function](https://en.wikipedia.org/wiki/Generalized_linear_model#Link_function) (`family = poisson(link='log')`).
 
 ```{r, results='hold'}
@@ -1186,8 +1186,8 @@ Note the strange `anova(..., test='Rao')` which merely states that p-values shou
 By the way, if there are only two counts and a large sample size (N > 100), this model begins to approximate the **binomial test**, `binom.test`, to a reasonable degree. But this sample size is larger than most use cases, so I won't raise to a rule-of-thumb and won't dig deeper into it here.
 
 
-## Contingency tables {#contingency}
-### Theory: As log-linear model
+## 列聯表分析 {#contingency}
+### 線性模型解說
 The theory here will be a bit more convoluted, and I mainly write it up so that you can get the *feeling* that it really is just a log-linear [two-way ANOVA model](#anova2). Let's get started...
 
 For a two-way contingency table, the model of the count variable $y$ is a modeled using the marginal proportions of a contingency table. Why this makes sense, is too involved to go into here, but [see the relevant slides by Christoph Scheepers here](https://www.uni-tuebingen.de/fileadmin/Uni_Tuebingen/SFB/SFB_833/A_Bereich/A1/Christoph_Scheepers_-_Statistikworkshop.pdf) for an excellent exposition. The model is composed of a lot of counts and the regression coefficients $A_i$ and $B_i$:
@@ -1207,7 +1207,7 @@ $log(y_i) = log(N) + log(\alpha_i) + log(\beta_j) + log(\alpha_i\beta_j)$
 Snuggly! Now we can get a better grasp on how the regression coefficients (which are proportions) independently contribute to $y$. This is why logarithms are so nice for proportions. Note that this is just [the two-way ANOVA model](#anova2) with some logarithms added, so we are back to our good old linear models - only the interpretation of the regression coefficients have changed! And we cannot use `lm` anymore in R.
 
 
-### Example data
+### 示範資料
 Here we need some long data and we need it in table format for `chisq.test`:
 
 ```{r}
@@ -1234,7 +1234,7 @@ print_df(D)
 ```
 
 
-### R code: Chi-square test
+### R程式碼： 列聯表分析的卡方檢定
 Now let's show the equivalence between a chi-square model and a log-linear model. This is very similar to our [two-way ANOVA](#anova2) above:
 
 ```{r, results='hold'}
@@ -1281,7 +1281,7 @@ If you unfold the raw R output, I've included `summary(full)` so that you can se
 
 
 
-# Sources and further equivalences {#links}
+# 參考來源及其他資料 {#links}
 Here are links to other sources who have exposed bits and pieces of this puzzle, including many further equivalences not covered here:
 
  * [My original exposition of the idea](https://stats.stackexchange.com/questions/303269/common-statistical-tests-as-linear-models) at Cross Validated
@@ -1295,7 +1295,7 @@ Here are links to other sources who have exposed bits and pieces of this puzzle,
 
 
 
-# Teaching materials and a course outline {#course}
+# 教材與課程設計建議 {#course}
 Most advanced stats books (and some intro-books) take the "everything is GLMM" approach as well. However, the "linear model" part often stay at the conceptual level. I wanted to make linear models the *tool* in a really concise way. Luckily, more beginner-friendly materials have emerged lately:
 
  * Russ Poldracks open-source book "Statistical Thinking for the 21st century" (start at [chapter 5 on modeling](http://statsthinking21.org/fitting-models-to-data.html))
@@ -1356,7 +1356,7 @@ Note that whereas the understanding of sampling and hypothesis testing is usuall
     5.2 *Likelihood ratios:* Likelihood ratios are the swizz army knife which will do model comparison all the way from the one-sample t-test to GLMMs. BIC penalizes model complexity. Moreover, add priors and you've got Bayes Factors. One tool, and you're done. I've used LRTs in the ANOVAs above.
 
 
-# Limitations
+# 使用限制
 I have made a few simplifications for clarity:
 
 1. I have not covered assumptions in the examples. This will be another post! But all assumptions of all tests come down to the usual three: a) independence of data points, b) normally distributed residuals, and c) homoscedasticity.
